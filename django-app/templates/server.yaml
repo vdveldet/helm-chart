@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django
+  labels:
+    tier: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: server
+  template:
+    metadata:
+      labels:
+        tier: server
+    spec:
+      securityContext:
+        # The default behavior of your node is to run as root, but that is undesirable, even in a dev environment,
+        # because root in the container is root on the node (your machine). In dev we still need the pod user to
+        # have some permissions, most notably the ability to write to the file system, because we're actually
+        # running our pre-commit hooks *inside* the pod. Therefore, we're going to run the server pod, and your code
+        # as the user that runs helm3. In a production version of this template, you'd probably want to run as
+        # something more secure.
+        # runAsUser: {{ .Values.uid }}
+        # runAsGroup: {{ .Values.gid }}
+        # runAsNonRoot: true
+      volumes:
+      - name: cache-volume
+        hostPath:
+          # Ensure the file directory is created.
+          path: /tmp/www
+          type: DirectoryOrCreate
+      # volumes:
+        # - name: host-project
+        #   hostPath:
+        #     path: "{{ .Values.projectDir }}"
+        # - name: database-secrets
+        #   secret:
+        #     secretName: database-credentials
+        # - name: app-secrets
+        #   secret:
+        #     secretName: app-secrets
+      containers:
+        - name: server
+          image: "{{ .Values.django_image.repository }}:{{ .Values.django_image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.django_image.imagePullPolicy }}"
+          env:
+          - name: DEBUG
+            value: "True"
+          - name: POSTGRES_NAME
+            value: "appdb"
+          - name: POSTGRES_USER
+            value: "postgresadmin"
+          - name: POSTGRES_PASSWORD
+            value: "admin123"
+          - name: POSTGRES_HOST
+            value: "postgres"
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: SECRET_KEY
+            value: "erererererererererere"
+          - name: ALLOWED_HOSTS
+            value: "*"
+          - name: SMTP_HOST
+            value: "192.168.0.1"
+          - name: SMTP_PORT
+            value: "25"
+          - name: VERSION
+            value: "666"
+          # env:
+          #   - name: SECRETS_ROOTPATH
+          #     value: "{{ .Values.secrets.rootPath }}"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /static
+              name: cache-volume
+                  # volumeMounts:
+          #   - name: database-secrets
+          #     mountPath: "{{ .Values.secrets.rootPath }}/database-secrets"
+          #     readOnly: true
+          #   - name: app-secrets
+          #     mountPath: "{{ .Values.secrets.rootPath }}/app-secrets"
+          #     readOnly: true
+
+

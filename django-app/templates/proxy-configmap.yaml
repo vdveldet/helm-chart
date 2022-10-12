@@ -1,0 +1,163 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "proxy-config"
+data:
+  nginx.conf: |
+      user nginx;
+      worker_processes  3;
+      error_log  /var/log/nginx/error.log;
+      events {
+        worker_connections  10240;
+      }
+      http {
+        log_format  main
+                'remote_addr:$remote_addr\t'
+                'time_local:$time_local\t'
+                'method:$request_method\t'
+                'uri:$request_uri\t'
+                'host:$host\t'
+                'status:$status\t'
+                'bytes_sent:$body_bytes_sent\t'
+                'referer:$http_referer\t'
+                'useragent:$http_user_agent\t'
+                'forwardedfor:$http_x_forwarded_for\t'
+                'request_time:$request_time';
+
+      sendfile            on;
+      tcp_nopush          on;
+      tcp_nodelay         on;
+      keepalive_timeout   65;
+      types_hash_max_size 2048;
+
+      include             /etc/nginx/mime.types;
+      default_type        application/octet-stream;
+
+
+      include /etc/nginx/virtualhost/virtualhost.conf;
+      }
+  virtualhost.conf: |
+      server {
+        listen 80 default_server;
+        root  /usr/share/nginx/html;
+        proxy_intercept_errors on;
+
+        access_log /var/log/nginx/app.access_log main;
+        error_log /var/log/nginx/app.error_log;
+
+        error_page 404 /error/error404.html;
+        error_page 500 502 503 504 /error/error505.html;
+
+        location /error {
+        }
+
+        location /static {
+        }
+
+        location /healthz {
+          access_log off;
+        }
+
+        location / {
+          proxy_intercept_errors on;
+          error_page 404 /error/error404.html;
+          error_page 500 502 503 504 /error/error505.html;
+          proxy_pass http://django:8080/;
+          proxy_http_version 1.0;
+        }
+      }
+  mime.types: |
+    types {
+      text/html                                        html htm shtml;
+      text/css                                         css;
+      text/xml                                         xml;
+      image/gif                                        gif;
+      image/jpeg                                       jpeg jpg;
+      application/javascript                           js;
+      application/atom+xml                             atom;
+      application/rss+xml                              rss;
+
+      text/mathml                                      mml;
+      text/plain                                       txt;
+      text/vnd.sun.j2me.app-descriptor                 jad;
+      text/vnd.wap.wml                                 wml;
+      text/x-component                                 htc;
+
+      image/png                                        png;
+      image/svg+xml                                    svg svgz;
+      image/tiff                                       tif tiff;
+      image/vnd.wap.wbmp                               wbmp;
+      image/webp                                       webp;
+      image/x-icon                                     ico;
+      image/x-jng                                      jng;
+      image/x-ms-bmp                                   bmp;
+
+      application/font-woff                            woff;
+      application/java-archive                         jar war ear;
+      application/json                                 json;
+      application/mac-binhex40                         hqx;
+      application/msword                               doc;
+      application/pdf                                  pdf;
+      application/postscript                           ps eps ai;
+      application/rtf                                  rtf;
+      application/vnd.apple.mpegurl                    m3u8;
+      application/vnd.google-earth.kml+xml             kml;
+      application/vnd.google-earth.kmz                 kmz;
+      application/vnd.ms-excel                         xls;
+      application/vnd.ms-fontobject                    eot;
+      application/vnd.ms-powerpoint                    ppt;
+      application/vnd.oasis.opendocument.graphics      odg;
+      application/vnd.oasis.opendocument.presentation  odp;
+      application/vnd.oasis.opendocument.spreadsheet   ods;
+      application/vnd.oasis.opendocument.text          odt;
+      application/vnd.openxmlformats-officedocument.presentationml.presentation
+                                                      pptx;
+      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                                                      xlsx;
+      application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                                                      docx;
+      application/vnd.wap.wmlc                         wmlc;
+      application/x-7z-compressed                      7z;
+      application/x-cocoa                              cco;
+      application/x-java-archive-diff                  jardiff;
+      application/x-java-jnlp-file                     jnlp;
+      application/x-makeself                           run;
+      application/x-perl                               pl pm;
+      application/x-pilot                              prc pdb;
+      application/x-rar-compressed                     rar;
+      application/x-redhat-package-manager             rpm;
+      application/x-sea                                sea;
+      application/x-shockwave-flash                    swf;
+      application/x-stuffit                            sit;
+      application/x-tcl                                tcl tk;
+      application/x-x509-ca-cert                       der pem crt;
+      application/x-xpinstall                          xpi;
+      application/xhtml+xml                            xhtml;
+      application/xspf+xml                             xspf;
+      application/zip                                  zip;
+
+      application/octet-stream                         bin exe dll;
+      application/octet-stream                         deb;
+      application/octet-stream                         dmg;
+      application/octet-stream                         iso img;
+      application/octet-stream                         msi msp msm;
+
+      audio/midi                                       mid midi kar;
+      audio/mpeg                                       mp3;
+      audio/ogg                                        ogg;
+      audio/x-m4a                                      m4a;
+      audio/x-realaudio                                ra;
+
+      video/3gpp                                       3gpp 3gp;
+      video/mp2t                                       ts;
+      video/mp4                                        mp4;
+      video/mpeg                                       mpeg mpg;
+      video/quicktime                                  mov;
+      video/webm                                       webm;
+      video/x-flv                                      flv;
+      video/x-m4v                                      m4v;
+      video/x-mng                                      mng;
+      video/x-ms-asf                                   asx asf;
+      video/x-ms-wmv                                   wmv;
+      video/x-msvideo                                  avi;
+    }

@@ -1,0 +1,10 @@
+django_image:
+  repository: registry.infodot:5000/test/test-app
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.0.24"
+secrets:
+  rootPath: /tmp
+service:
+  type: NodePort
+  port: 80

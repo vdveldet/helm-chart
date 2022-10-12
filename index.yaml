@@ -1,0 +1,96 @@
+apiVersion: v1
+entries:
+  django-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-10-12T16:19:19.72490107+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 768cb14b607ab34e82b1d5f127bd8bc05addcbbddcb20325cbf164c80863621e
+    name: django-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/django-app/django-app-1.0.0.tgz
+    version: 1.0.0
+  phoenixnap:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-10-12T16:19:19.725652091+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 4be5a3563707b6ccfef1eea32012dd0e7085d3a6e3bbce57d30f8d25370415ac
+    name: phoenixnap
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/phoenixnap/phoenixnap-0.1.0.tgz
+    version: 0.1.0
+  test-app:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.745475667+02:00"
+    description: A Django test Deployment
+    digest: 6426c293dfde7899b76d70667d314c41cb2342a99b1bde937d02016df7d1c487
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.736693747+02:00"
+    description: A Django test Deployment
+    digest: 5b4f9679a53a314cad9edf32925f50c9509ad62a8cce340f7ffb37e6f56404a7
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.732578134+02:00"
+    description: A Django test Deployment
+    digest: 6771eb334d1290002edd6f993950fb6fa41b697d156ca60782d9a9e9bd3eeff2
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.729422487+02:00"
+    description: A Django test Deployment
+    digest: d38a88bcc8cc8f3ecec2fa91191580aa2afe60ab5cee933c9532d2e5508e1e98
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.727906104+02:00"
+    description: A Django test Deployment
+    digest: 35fd1b649367f6c36e4c587c928af2825e06b4f73d1de0c175863e08d9cf0f27
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.727079818+02:00"
+    description: A Django test Deployment
+    digest: 2583bc86aeaaa5352bea158b668abda5838cb8bbffc1abb4a097f7d8af3df319
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-12T16:19:19.726305329+02:00"
+    description: A Django test Deployment
+    digest: 6a1e388f7f13a3d8097558fc7645b2da0e948e2bd300db634de2dde32a068c84
+    name: test-app
+    type: application
+    urls:
+    - https://vdveldet.github.io/helm-charts/test-app/test-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-10-12T16:19:19.723430504+02:00"

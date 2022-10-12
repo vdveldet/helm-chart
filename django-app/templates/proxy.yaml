@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    tier: proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: proxy
+  template:
+    metadata:
+      labels:
+        tier: proxy
+    spec:
+      securityContext:
+      containers:
+        - name: nginx
+          image: nginx   
+          env:
+          - name: TZ
+            value: Europe/Brussels
+          ports:
+            - containerPort: 80
+              name: http-web-svc
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/static
+              name: cache-volume
+            - mountPath: /etc/nginx 
+              readOnly: true
+              name: proxy-conf
+            - mountPath: /var/log/nginx
+              name: log
+      volumes:
+        - name: proxy-conf
+          configMap:
+            name: proxy-config
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+              - key: virtualhost.conf
+                path: virtualhost/virtualhost.conf
+              - key: mime.types
+                path: mime.types
+        - name: log
+          emptyDir: {}
+        - name: cache-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /tmp/www
+            type: DirectoryOrCreate
